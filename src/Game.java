@@ -72,7 +72,7 @@ public class Game {
 	
 	// True if one of the players has won the game.
 	public boolean winner(){
-		return player1.hasWon() && player2.hasWon();
+		return player1.hasWon() || player2.hasWon();
 	}
 	
 	/* 
