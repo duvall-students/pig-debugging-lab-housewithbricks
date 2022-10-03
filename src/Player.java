@@ -5,8 +5,9 @@ public abstract class Player {
 	protected int myScore;
 	private final int WIN_SCORE = 100;
 	
-	public Player(String myName){
+	public Player(String name){
 		myScore = 0;
+		myName = name;
 	}
 	
 	// Each player must provide logic for deciding to roll again
