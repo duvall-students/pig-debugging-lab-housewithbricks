@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Random;
 
 public class Game {
@@ -9,10 +10,10 @@ public class Game {
 	private final int LOSER_ROLL = 1;
 	
 	public Game(){
-		Player player1 = new GUIPlayer();
-		Player player2 = new ComputerPlayer();
-		die = new Random();
-		spinner = new Spinner();
+		this.player2 = new ComputerPlayer();
+		this.player1 = new GUIPlayer();
+		this.die = new Random();
+		this.spinner = new Spinner();
 	}
 	
 	/*
@@ -20,7 +21,7 @@ public class Game {
 	 */
 	public void playGame(){
 		printStartGameMessage();
-		Player whoseTurn = player1;
+			Player whoseTurn = player1;
 		while(!winner()){
 			int roundScore = takeATurn(whoseTurn);
 			whoseTurn.addToScore(roundScore);
@@ -56,7 +57,7 @@ public class Game {
 				System.out.println("Lose a turn.");
 				return 0;
 			}
-			else if(spin == LOSER_SPIN.toUpperCase()){
+			else if(spin.equals(LOSER_SPIN.toUpperCase())){
 				System.out.println("Too bad!  Lose all your points.");
 				whoseTurn.resetScore();
 				return 0;
@@ -72,7 +73,15 @@ public class Game {
 	
 	// True if one of the players has won the game.
 	public boolean winner(){
-		return player1.hasWon() && player2.hasWon();
+		try {
+		if(player1 != null || player2 != null) {
+			return player1.hasWon() || player2.hasWon();
+		}else {
+			return false;
+		}
+		}	catch (NullPointerException  exp) {exp.printStackTrace();}
+		return false;
+
 	}
 	
 	/* 
@@ -82,6 +91,7 @@ public class Game {
 		System.out.println("New Round!  "+ whoseTurn.getName()+" 's turn."); 
 		System.out.println(player1);
 		System.out.println(player2);
+			
 	}
 	
 	public void printEndGameMessage(){
