@@ -8,20 +8,20 @@ public class Game {
 	private Spinner spinner;
 	private final String LOSER_SPIN = "grunt";
 	private final int LOSER_ROLL = 1;
-	
+
 	public Game(){
 		this.player2 = new ComputerPlayer();
 		this.player1 = new GUIPlayer();
 		this.die = new Random();
 		this.spinner = new Spinner();
 	}
-	
+
 	/*
 	 * Method will play one game between the players.
 	 */
 	public void playGame(){
 		printStartGameMessage();
-			Player whoseTurn = player1;
+		Player whoseTurn = player1;
 		while(!winner()){
 			int roundScore = takeATurn(whoseTurn);
 			whoseTurn.addToScore(roundScore);
@@ -35,7 +35,7 @@ public class Game {
 		}
 		printEndGameMessage();
 	}
-	
+
 	/*
 	 * One player's turn.  Ends because
 	 * - roll a 1
@@ -49,12 +49,15 @@ public class Game {
 		boolean keepGoing = true;
 		printStartRoundMessage(whoseTurn);
 		while(keepGoing){
-			int roll = die.nextInt(7);
+			int roll = die.nextInt(6-1)+ 1;
 			String spin = spinner.spin();
 			System.out.println(roll+ " "+ spin);
-			
+
 			if(roll == LOSER_ROLL){
 				System.out.println("Lose a turn.");
+				return roundScore;
+			}else if(roll == LOSER_ROLL && spin.equals(LOSER_SPIN.toUpperCase())){
+				System.out.println("Too bad! Lose a turn & Lose all your points.");
 				return 0;
 			}
 			else if(spin.equals(LOSER_SPIN.toUpperCase())){
@@ -70,20 +73,20 @@ public class Game {
 		}
 		return roundScore;
 	}
-	
+
 	// True if one of the players has won the game.
 	public boolean winner(){
 		try {
-		if(player1 != null || player2 != null) {
-			return player1.hasWon() || player2.hasWon();
-		}else {
-			return false;
-		}
+			if(player1 != null || player2 != null) {
+				return player1.hasWon() || player2.hasWon();
+			}else {
+				return false;
+			}
 		}	catch (NullPointerException  exp) {exp.printStackTrace();}
 		return false;
 
 	}
-	
+
 	/* 
 	 * These methods are for printing messages to the console to follow the game.
 	 */
@@ -91,9 +94,9 @@ public class Game {
 		System.out.println("New Round!  "+ whoseTurn.getName()+" 's turn."); 
 		System.out.println(player1);
 		System.out.println(player2);
-			
+
 	}
-	
+
 	public void printEndGameMessage(){
 		if(player1.hasWon()){
 			System.out.println("Winner is "+player1.getName());
@@ -102,7 +105,7 @@ public class Game {
 			System.out.println("Winner is "+player2.getName());
 		}
 	}
-	
+
 	public void printStartGameMessage(){
 		System.out.println("Let's Play Pig!");
 	}
